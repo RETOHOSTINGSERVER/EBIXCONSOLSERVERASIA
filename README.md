@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,13 +22,14 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            background-color: #333;
         }
         
         .login-box {
             background-color: white;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
             width: 350px;
             text-align: center;
         }
@@ -398,6 +399,62 @@
             border-radius: 3px;
             cursor: pointer;
         }
+
+        /* Records Statistics Section */
+        .records-stats {
+            background-color: #555;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
+        .stats-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .stats-filters select {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: none;
+            background-color: #666;
+            color: white;
+        }
+        
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background-color: #666;
+        }
+        
+        .stats-table th, .stats-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #777;
+        }
+        
+        .stats-table th {
+            background-color: #444;
+            color: #4CAF50;
+        }
+        
+        .stats-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .stats-actions button {
+            padding: 8px 15px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -435,6 +492,10 @@
                     <option value="hold">Hold</option>
                     <option value="running">Running</option>
                     <option value="public-holiday">Public Holiday</option>
+                </select>
+                <select id="customer-name-filter">
+                    <option value="">All Customers</option>
+                    <!-- Customer names will be populated by JavaScript -->
                 </select>
                 <input type="text" id="search-input" placeholder="Search by name, number, etc.">
                 <button onclick="filterRecords()">Filter</button>
@@ -584,6 +645,54 @@
                     <p>No engineer assigned yet</p>
                 </div>
                 <button class="assign-btn" onclick="openAssignEngineerModal()">Assign Engineer</button>
+            </div>
+            
+            <!-- Records Statistics Section -->
+            <div class="records-stats">
+                <h3>Monthly/Yearly Records</h3>
+                <div class="stats-filters">
+                    <select id="stats-year">
+                        <option value="">All Years</option>
+                        <!-- Years will be populated by JavaScript -->
+                    </select>
+                    <select id="stats-month">
+                        <option value="">All Months</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+                    <button onclick="updateStatsTable()">Show Records</button>
+                </div>
+                
+                <table class="stats-table">
+                    <thead>
+                        <tr>
+                            <th>Month/Year</th>
+                            <th>Total Records</th>
+                            <th>Accept</th>
+                            <th>Hold</th>
+                            <th>Running</th>
+                            <th>Public Holiday</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stats-table-body">
+                        <!-- Stats will be populated here -->
+                    </tbody>
+                </table>
+                
+                <div class="stats-actions">
+                    <button onclick="saveStatsToCSV()">Save as CSV</button>
+                    <button onclick="printStats()">Print Stats</button>
+                </div>
             </div>
             
             <div class="records-summary">
@@ -865,17 +974,187 @@
             document.getElementById('hold-count').textContent = records.filter(r => r.status === 'hold').length;
             document.getElementById('running-count').textContent = records.filter(r => r.status === 'running').length;
             document.getElementById('holiday-count').textContent = records.filter(r => r.status === 'public-holiday').length;
+            
+            // Initialize the filters
+            initCustomerNameFilter();
+            initYearFilter();
+            updateStatsTable();
+        }
+        
+        // Initialize customer name filter dropdown
+        function initCustomerNameFilter() {
+            const customerFilter = document.getElementById('customer-name-filter');
+            customerFilter.innerHTML = '<option value="">All Customers</option>';
+            
+            const customerNames = [...new Set(records.map(r => r.name))].sort();
+            
+            customerNames.forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                customerFilter.appendChild(option);
+            });
+        }
+        
+        // Initialize year filter dropdown
+        function initYearFilter() {
+            const yearFilter = document.getElementById('stats-year');
+            yearFilter.innerHTML = '<option value="">All Years</option>';
+            
+            const years = [...new Set(records.map(r => new Date(r.createdAt).getFullYear()))].sort((a, b) => b - a);
+            
+            years.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearFilter.appendChild(option);
+            });
+        }
+        
+        // Update stats table based on filters
+        function updateStatsTable() {
+            const year = document.getElementById('stats-year').value;
+            const month = document.getElementById('stats-month').value;
+            
+            let filteredRecords = records;
+            
+            if (year) {
+                filteredRecords = filteredRecords.filter(r => new Date(r.createdAt).getFullYear() == year);
+            }
+            
+            if (month) {
+                filteredRecords = filteredRecords.filter(r => new Date(r.createdAt).getMonth() + 1 == month);
+            }
+            
+            const statsBody = document.getElementById('stats-table-body');
+            statsBody.innerHTML = '';
+            
+            if (!year && !month) {
+                // Show yearly summary
+                const years = [...new Set(records.map(r => new Date(r.createdAt).getFullYear()))].sort((a, b) => b - a);
+                
+                years.forEach(year => {
+                    const yearRecords = records.filter(r => new Date(r.createdAt).getFullYear() == year);
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${year}</td>
+                        <td>${yearRecords.length}</td>
+                        <td>${yearRecords.filter(r => r.status === 'accept').length}</td>
+                        <td>${yearRecords.filter(r => r.status === 'hold').length}</td>
+                        <td>${yearRecords.filter(r => r.status === 'running').length}</td>
+                        <td>${yearRecords.filter(r => r.status === 'public-holiday').length}</td>
+                    `;
+                    statsBody.appendChild(row);
+                });
+            } else if (year && !month) {
+                // Show monthly summary for selected year
+                for (let m = 1; m <= 12; m++) {
+                    const monthRecords = filteredRecords.filter(r => new Date(r.createdAt).getMonth() + 1 == m);
+                    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                    
+                    if (monthRecords.length > 0) {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${monthNames[m-1]} ${year}</td>
+                            <td>${monthRecords.length}</td>
+                            <td>${monthRecords.filter(r => r.status === 'accept').length}</td>
+                            <td>${monthRecords.filter(r => r.status === 'hold').length}</td>
+                            <td>${monthRecords.filter(r => r.status === 'running').length}</td>
+                            <td>${monthRecords.filter(r => r.status === 'public-holiday').length}</td>
+                        `;
+                        statsBody.appendChild(row);
+                    }
+                }
+            } else {
+                // Show detailed records for selected month/year
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                const monthName = monthNames[parseInt(month)-1];
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${monthName} ${year}</td>
+                    <td>${filteredRecords.length}</td>
+                    <td>${filteredRecords.filter(r => r.status === 'accept').length}</td>
+                    <td>${filteredRecords.filter(r => r.status === 'hold').length}</td>
+                    <td>${filteredRecords.filter(r => r.status === 'running').length}</td>
+                    <td>${filteredRecords.filter(r => r.status === 'public-holiday').length}</td>
+                `;
+                statsBody.appendChild(row);
+            }
+        }
+        
+        // Save stats to CSV
+        function saveStatsToCSV() {
+            const year = document.getElementById('stats-year').value;
+            const month = document.getElementById('stats-month').value;
+            
+            let csvContent = "Month/Year,Total Records,Accept,Hold,Running,Public Holiday\n";
+            
+            const rows = document.querySelectorAll('#stats-table-body tr');
+            rows.forEach(row => {
+                const cols = row.querySelectorAll('td');
+                const rowData = Array.from(cols).map(col => col.textContent).join(',');
+                csvContent += rowData + '\n';
+            });
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            
+            let fileName = 'records_stats';
+            if (year) fileName += `_${year}`;
+            if (month) fileName += `_${month}`;
+            fileName += '.csv';
+            
+            link.setAttribute('download', fileName);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Print stats
+        function printStats() {
+            const printWindow = window.open('', '', 'width=800,height=600');
+            printWindow.document.write('<html><head><title>Records Statistics</title>');
+            printWindow.document.write('<style>table {border-collapse: collapse; width: 100%;} th, td {border: 1px solid #ddd; padding: 8px; text-align: left;} th {background-color: #f2f2f2;}</style>');
+            printWindow.document.write('</head><body>');
+            printWindow.document.write('<h2>Records Statistics</h2>');
+            
+            const year = document.getElementById('stats-year').value;
+            const month = document.getElementById('stats-month').value;
+            if (year) printWindow.document.write(`<p>Year: ${year}</p>`);
+            if (month) {
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                printWindow.document.write(`<p>Month: ${monthNames[parseInt(month)-1]}</p>`);
+            }
+            
+            printWindow.document.write(document.querySelector('.stats-table').outerHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
         }
         
         // Filter records
         function filterRecords() {
             const status = document.getElementById('status-filter').value;
+            const customerName = document.getElementById('customer-name-filter').value;
             const searchTerm = document.getElementById('search-input').value.toLowerCase();
             
             let filteredRecords = records;
             
             if (status) {
                 filteredRecords = filteredRecords.filter(r => r.status === status);
+            }
+            
+            if (customerName) {
+                filteredRecords = filteredRecords.filter(r => r.name === customerName);
             }
             
             if (searchTerm) {
@@ -891,23 +1170,8 @@
                 );
             }
             
-            // Update the records table with filtered results
             updateRecordsTable(filteredRecords);
-            
-            // Update the counts to reflect filtered records
-            document.getElementById('total-count').textContent = filteredRecords.length;
-            document.getElementById('accept-count').textContent = filteredRecords.filter(r => r.status === 'accept').length;
-            document.getElementById('hold-count').textContent = filteredRecords.filter(r => r.status === 'hold').length;
-            document.getElementById('running-count').textContent = filteredRecords.filter(r => r.status === 'running').length;
-            document.getElementById('holiday-count').textContent = filteredRecords.filter(r => r.status === 'public-holiday').length;
-        }
-        
-        // Clear filters
-        function clearFilters() {
-            document.getElementById('status-filter').value = '';
-            document.getElementById('search-input').value = '';
-            updateRecordsTable(records);
-            updateSummary();
+            updateSummaryCounts(filteredRecords);
         }
         
         // Update records table
@@ -944,6 +1208,24 @@
                 
                 tbody.appendChild(row);
             });
+        }
+        
+        // Update summary counts
+        function updateSummaryCounts(filteredRecords) {
+            document.getElementById('total-count').textContent = filteredRecords.length;
+            document.getElementById('accept-count').textContent = filteredRecords.filter(r => r.status === 'accept').length;
+            document.getElementById('hold-count').textContent = filteredRecords.filter(r => r.status === 'hold').length;
+            document.getElementById('running-count').textContent = filteredRecords.filter(r => r.status === 'running').length;
+            document.getElementById('holiday-count').textContent = filteredRecords.filter(r => r.status === 'public-holiday').length;
+        }
+        
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('status-filter').value = '';
+            document.getElementById('customer-name-filter').value = '';
+            document.getElementById('search-input').value = '';
+            updateRecordsTable(records);
+            updateSummaryCounts(records);
         }
         
         // Load record into form
@@ -1224,370 +1506,6 @@
             
             // Clear engineer display
             document.getElementById('assigned-engineer-display').innerHTML = '<p>No engineer assigned yet</p>';
-        }
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EBIXCONSOLPORTAL - Admin Portal</title>
-    <style>
-        /* Previous CSS styles remain the same */
-        /* Add these new styles for the monthly/yearly records section */
-        
-        .records-stats {
-            background-color: #555;
-            padding: 20px;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        
-        .stats-filters {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .stats-filters select {
-            padding: 8px 12px;
-            border-radius: 4px;
-            border: none;
-            background-color: #666;
-            color: white;
-        }
-        
-        .stats-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            background-color: #666;
-        }
-        
-        .stats-table th, .stats-table td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #777;
-        }
-        
-        .stats-table th {
-            background-color: #444;
-            color: #4CAF50;
-        }
-        
-        .stats-actions {
-            margin-top: 15px;
-            display: flex;
-            gap: 10px;
-        }
-        
-        .stats-actions button {
-            padding: 8px 15px;
-            background-color: #2196F3;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <!-- Previous HTML content remains the same until the main-content section -->
-    
-    <div class="main-content">
-        <!-- Previous filter section remains the same -->
-        <div class="filter-section">
-            <select id="status-filter">
-                <option value="">All Records</option>
-                <option value="accept">Accept</option>
-                <option value="hold">Hold</option>
-                <option value="running">Running</option>
-                <option value="public-holiday">Public Holiday</option>
-            </select>
-            <select id="customer-name-filter">
-                <option value="">All Customers</option>
-                <!-- Customer names will be populated by JavaScript -->
-            </select>
-            <input type="text" id="search-input" placeholder="Search by name, number, etc.">
-            <button onclick="filterRecords()">Filter</button>
-            <button onclick="clearFilters()">Clear Filters</button>
-        </div>
-        
-        <!-- Previous form sections remain the same -->
-        
-        <!-- New Monthly/Yearly Records Section -->
-        <div class="records-stats">
-            <h3>Monthly/Yearly Records</h3>
-            <div class="stats-filters">
-                <select id="stats-year">
-                    <option value="">All Years</option>
-                    <!-- Years will be populated by JavaScript -->
-                </select>
-                <select id="stats-month">
-                    <option value="">All Months</option>
-                    <option value="1">January</option>
-                    <option value="2">February</option>
-                    <option value="3">March</option>
-                    <option value="4">April</option>
-                    <option value="5">May</option>
-                    <option value="6">June</option>
-                    <option value="7">July</option>
-                    <option value="8">August</option>
-                    <option value="9">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
-                </select>
-                <button onclick="updateStatsTable()">Show Records</button>
-            </div>
-            
-            <table class="stats-table">
-                <thead>
-                    <tr>
-                        <th>Month/Year</th>
-                        <th>Total Records</th>
-                        <th>Accept</th>
-                        <th>Hold</th>
-                        <th>Running</th>
-                        <th>Public Holiday</th>
-                    </tr>
-                </thead>
-                <tbody id="stats-table-body">
-                    <!-- Stats will be populated here -->
-                </tbody>
-            </table>
-            
-            <div class="stats-actions">
-                <button onclick="saveStatsToCSV()">Save as CSV</button>
-                <button onclick="printStats()">Print Stats</button>
-            </div>
-        </div>
-        
-        <!-- Previous sections (engineer assignment, records summary, etc.) remain the same -->
-    </div>
-    
-    <!-- Previous modals remain the same -->
-    
-    <script>
-        // Previous JavaScript code remains the same until the end
-        
-        // Add these new functions for the monthly/yearly records functionality
-        
-        // Initialize customer name filter dropdown
-        function initCustomerNameFilter() {
-            const customerFilter = document.getElementById('customer-name-filter');
-            const customerNames = [...new Set(records.map(r => r.name))].sort();
-            
-            customerNames.forEach(name => {
-                const option = document.createElement('option');
-                option.value = name;
-                option.textContent = name;
-                customerFilter.appendChild(option);
-            });
-        }
-        
-        // Initialize year filter dropdown
-        function initYearFilter() {
-            const yearFilter = document.getElementById('stats-year');
-            const years = [...new Set(records.map(r => new Date(r.createdAt).getFullYear()))].sort((a, b) => b - a);
-            
-            years.forEach(year => {
-                const option = document.createElement('option');
-                option.value = year;
-                option.textContent = year;
-                yearFilter.appendChild(option);
-            });
-        }
-        
-        // Update stats table based on filters
-        function updateStatsTable() {
-            const year = document.getElementById('stats-year').value;
-            const month = document.getElementById('stats-month').value;
-            
-            let filteredRecords = records;
-            
-            if (year) {
-                filteredRecords = filteredRecords.filter(r => new Date(r.createdAt).getFullYear() == year);
-            }
-            
-            if (month) {
-                filteredRecords = filteredRecords.filter(r => new Date(r.createdAt).getMonth() + 1 == month);
-            }
-            
-            const statsBody = document.getElementById('stats-table-body');
-            statsBody.innerHTML = '';
-            
-            if (!year && !month) {
-                // Show yearly summary
-                const years = [...new Set(records.map(r => new Date(r.createdAt).getFullYear()))].sort((a, b) => b - a);
-                
-                years.forEach(year => {
-                    const yearRecords = records.filter(r => new Date(r.createdAt).getFullYear() == year);
-                    
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${year}</td>
-                        <td>${yearRecords.length}</td>
-                        <td>${yearRecords.filter(r => r.status === 'accept').length}</td>
-                        <td>${yearRecords.filter(r => r.status === 'hold').length}</td>
-                        <td>${yearRecords.filter(r => r.status === 'running').length}</td>
-                        <td>${yearRecords.filter(r => r.status === 'public-holiday').length}</td>
-                    `;
-                    statsBody.appendChild(row);
-                });
-            } else if (year && !month) {
-                // Show monthly summary for selected year
-                for (let m = 1; m <= 12; m++) {
-                    const monthRecords = filteredRecords.filter(r => new Date(r.createdAt).getMonth() + 1 == m);
-                    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-                    
-                    if (monthRecords.length > 0) {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${monthNames[m-1]} ${year}</td>
-                            <td>${monthRecords.length}</td>
-                            <td>${monthRecords.filter(r => r.status === 'accept').length}</td>
-                            <td>${monthRecords.filter(r => r.status === 'hold').length}</td>
-                            <td>${monthRecords.filter(r => r.status === 'running').length}</td>
-                            <td>${monthRecords.filter(r => r.status === 'public-holiday').length}</td>
-                        `;
-                        statsBody.appendChild(row);
-                    }
-                }
-            } else {
-                // Show detailed records for selected month/year
-                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-                const monthName = monthNames[parseInt(month)-1];
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${monthName} ${year}</td>
-                    <td>${filteredRecords.length}</td>
-                    <td>${filteredRecords.filter(r => r.status === 'accept').length}</td>
-                    <td>${filteredRecords.filter(r => r.status === 'hold').length}</td>
-                    <td>${filteredRecords.filter(r => r.status === 'running').length}</td>
-                    <td>${filteredRecords.filter(r => r.status === 'public-holiday').length}</td>
-                `;
-                statsBody.appendChild(row);
-            }
-        }
-        
-        // Save stats to CSV
-        function saveStatsToCSV() {
-            const year = document.getElementById('stats-year').value;
-            const month = document.getElementById('stats-month').value;
-            
-            let csvContent = "Month/Year,Total Records,Accept,Hold,Running,Public Holiday\n";
-            
-            const rows = document.querySelectorAll('#stats-table-body tr');
-            rows.forEach(row => {
-                const cols = row.querySelectorAll('td');
-                const rowData = Array.from(cols).map(col => col.textContent).join(',');
-                csvContent += rowData + '\n';
-            });
-            
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.setAttribute('href', url);
-            
-            let fileName = 'records_stats';
-            if (year) fileName += `_${year}`;
-            if (month) fileName += `_${month}`;
-            fileName += '.csv';
-            
-            link.setAttribute('download', fileName);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-        
-        // Print stats
-        function printStats() {
-            const printWindow = window.open('', '', 'width=800,height=600');
-            printWindow.document.write('<html><head><title>Records Statistics</title>');
-            printWindow.document.write('<style>table {border-collapse: collapse; width: 100%;} th, td {border: 1px solid #ddd; padding: 8px; text-align: left;} th {background-color: #f2f2f2;}</style>');
-            printWindow.document.write('</head><body>');
-            printWindow.document.write('<h2>Records Statistics</h2>');
-            
-            const year = document.getElementById('stats-year').value;
-            const month = document.getElementById('stats-month').value;
-            if (year) printWindow.document.write(`<p>Year: ${year}</p>`);
-            if (month) {
-                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-                printWindow.document.write(`<p>Month: ${monthNames[parseInt(month)-1]}</p>`);
-            }
-            
-            printWindow.document.write(document.querySelector('.stats-table').outerHTML);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.focus();
-            setTimeout(() => {
-                printWindow.print();
-                printWindow.close();
-            }, 500);
-        }
-        
-        // Update filterRecords function to include customer name filter
-        function filterRecords() {
-            const status = document.getElementById('status-filter').value;
-            const customerName = document.getElementById('customer-name-filter').value;
-            const searchTerm = document.getElementById('search-input').value.toLowerCase();
-            
-            let filteredRecords = records;
-            
-            if (status) {
-                filteredRecords = filteredRecords.filter(r => r.status === status);
-            }
-            
-            if (customerName) {
-                filteredRecords = filteredRecords.filter(r => r.name === customerName);
-            }
-            
-            if (searchTerm) {
-                filteredRecords = filteredRecords.filter(r => 
-                    (r.customerNumber && r.customerNumber.toLowerCase().includes(searchTerm)) ||
-                    (r.name && r.name.toLowerCase().includes(searchTerm)) ||
-                    (r.surname && r.surname.toLowerCase().includes(searchTerm)) ||
-                    (r.contact && r.contact.toLowerCase().includes(searchTerm)) ||
-                    (r.machineName && r.machineName.toLowerCase().includes(searchTerm)) ||
-                    (r.serialNumber && r.serialNumber.toLowerCase().includes(searchTerm)) ||
-                    (r.assignedEngineer && r.assignedEngineer.name.toLowerCase().includes(searchTerm)) ||
-                    (r.assignedEngineer && r.assignedEngineer.id.toLowerCase().includes(searchTerm))
-                );
-            }
-            
-            updateRecordsTable(filteredRecords);
-            updateSummaryCounts(filteredRecords);
-        }
-        
-        // Update clearFilters function to clear customer name filter
-        function clearFilters() {
-            document.getElementById('status-filter').value = '';
-            document.getElementById('customer-name-filter').value = '';
-            document.getElementById('search-input').value = '';
-            updateRecordsTable(records);
-            updateSummaryCounts(records);
-        }
-        
-        // Initialize the new filters when records are loaded
-        function updateSummary() {
-            // Previous updateSummary code
-            updateSummaryCounts(records);
-            
-            // Initialize the new filters
-            initCustomerNameFilter();
-            initYearFilter();
-            updateStatsTable();
-        }
-        
-        // Call updateSummary when the page loads if there are records
-        if (records.length > 0) {
-            updateSummary();
         }
     </script>
 </body>
