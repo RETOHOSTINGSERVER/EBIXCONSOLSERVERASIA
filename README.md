@@ -3,342 +3,292 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EBIXCONSOL PORTAL - Admin</title>
+    <title>EBIXCONSOLPORTAL - Admin Portal</title>
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f0f0f0;
             color: #333;
         }
         
-        /* Square Login Container */
         .login-container {
-            width: 350px;
-            height: 350px;
-            margin: 80px auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 0;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            text-align: center;
             display: flex;
-            flex-direction: column;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         
-        .login-container h2 {
-            color: #2c3e50;
-            margin-bottom: 25px;
-            font-size: 24px;
+        .login-box {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
         }
         
-        .login-container input[type="text"],
-        .login-container input[type="password"] {
+        .login-box h2 {
+            margin-bottom: 20px;
+            color: #444;
+        }
+        
+        .login-box input {
             width: 100%;
             padding: 12px;
-            margin-bottom: 20px;
+            margin: 10px 0;
             border: 1px solid #ddd;
-            border-radius: 0;
+            border-radius: 5px;
             font-size: 16px;
         }
         
-        .login-container input[type="submit"] {
+        .login-box button {
             width: 100%;
             padding: 12px;
-            background-color: #3498db;
+            background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 0;
-            font-size: 16px;
+            border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            font-size: 16px;
+            margin-top: 10px;
         }
         
-        .login-container input[type="submit"]:hover {
-            background-color: #2980b9;
+        .login-box button:hover {
+            background-color: #45a049;
         }
         
-        .copyright {
+        .footer {
             margin-top: 20px;
             font-size: 12px;
-            color: #7f8c8d;
+            color: #777;
         }
         
-        /* Admin Portal */
-        .admin-portal {
+        /* Admin Dashboard Styles */
+        .admin-dashboard {
             display: none;
-            background-color: #2c3e50;
-            color: #ecf0f1;
+            background-color: #333;
+            color: white;
             min-height: 100vh;
         }
         
         .header {
-            background-color: #1a252f;
-            padding: 15px 30px;
+            background-color: #222;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-            color: #3498db;
-        }
-        
-        .portal-title {
-            font-size: 18px;
-            color: #ecf0f1;
         }
         
         .clock {
-            font-size: 16px;
-            font-weight: bold;
-            color: #f39c12;
+            font-size: 18px;
         }
         
-        .user-actions {
+        .user-info {
             display: flex;
-            gap: 15px;
+            align-items: center;
+            gap: 10px;
         }
         
-        .user-actions button {
-            padding: 8px 15px;
-            background-color: #3498db;
+        .user-info button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 3px;
             cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s;
         }
         
-        .user-actions button:hover {
-            background-color: #2980b9;
-        }
-        
-        .content {
-            padding: 25px;
-            background-color: #34495e;
-            min-height: calc(100vh - 60px);
-        }
-        
-        .section {
-            background-color: #3d566e;
+        .main-content {
             padding: 20px;
-            margin-bottom: 25px;
-            border-radius: 6px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #444;
         }
         
-        .section h2 {
-            margin-top: 0;
-            border-bottom: 1px solid #4b6584;
-            padding-bottom: 10px;
-            color: #f39c12;
-            font-size: 20px;
+        .form-section {
+            background-color: #555;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
         }
         
-        .form-group {
-            margin-bottom: 18px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #bdc3c7;
-        }
-        
-        .form-group input[type="text"],
-        .form-group input[type="email"],
-        .form-group input[type="tel"],
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #4b6584;
-            border-radius: 4px;
-            background-color: #4b6584;
-            color: #ecf0f1;
-            font-size: 15px;
-        }
-        
-        .form-group textarea {
-            min-height: 80px;
+        .form-section h3 {
+            margin-bottom: 15px;
+            color: #4CAF50;
         }
         
         .form-row {
             display: flex;
-            gap: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
         }
         
-        .form-row .form-group {
+        .form-group {
             flex: 1;
+            min-width: 200px;
         }
         
-        .status-cards {
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ddd;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #777;
+            border-radius: 4px;
+            background-color: #666;
+            color: white;
+        }
+        
+        .status-options {
             display: flex;
-            gap: 20px;
-            margin-top: 25px;
+            gap: 15px;
+            margin-top: 10px;
             flex-wrap: wrap;
         }
         
-        .status-card {
-            flex: 1;
-            min-width: 200px;
-            background-color: #4b6584;
-            padding: 15px;
-            border-radius: 6px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        
-        .status-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .status-card h3 {
-            margin-top: 0;
-            color: #bdc3c7;
-            font-size: 16px;
-        }
-        
-        .status-card .count {
-            font-size: 28px;
-            font-weight: bold;
-            color: #f39c12;
+        .status-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         
         .action-buttons {
             display: flex;
-            gap: 15px;
-            margin-top: 25px;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
         
         .action-buttons button {
-            padding: 10px 20px;
+            padding: 10px 15px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 15px;
-            transition: all 0.3s;
         }
         
         .save-btn {
-            background-color: #2ecc71;
+            background-color: #4CAF50;
             color: white;
-        }
-        
-        .save-btn:hover {
-            background-color: #27ae60;
         }
         
         .print-btn {
-            background-color: #3498db;
+            background-color: #2196F3;
             color: white;
         }
         
-        .print-btn:hover {
-            background-color: #2980b9;
-        }
-        
-        .remove-btn {
-            background-color: #e74c3c;
+        .delete-btn {
+            background-color: #f44336;
             color: white;
         }
         
-        .remove-btn:hover {
-            background-color: #c0392b;
+        .file-upload {
+            margin-top: 20px;
         }
         
-        .view-btn {
-            background-color: #9b59b6;
-            color: white;
+        .file-upload label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ddd;
         }
         
-        .view-btn:hover {
-            background-color: #8e44ad;
+        .records-summary {
+            background-color: #555;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
         }
         
-        table {
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .summary-item {
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+            margin: 5px 0;
+        }
+        
+        .summary-count {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        .records-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 25px;
-            background-color: #4b6584;
+            margin-top: 20px;
+            background-color: #666;
         }
         
-        table th, table td {
-            padding: 12px 15px;
-            border: 1px solid #5d7a9a;
+        .records-table th, .records-table td {
+            padding: 12px;
             text-align: left;
+            border-bottom: 1px solid #777;
         }
         
-        table th {
-            background-color: #3d566e;
-            color: #f39c12;
-            font-weight: 600;
-            position: sticky;
-            top: 60px;
+        .records-table th {
+            background-color: #444;
+            color: #4CAF50;
         }
         
-        table tr:nth-child(even) {
-            background-color: #455d73;
+        .records-table tr:hover {
+            background-color: #555;
         }
         
-        table tr:hover {
-            background-color: #506e8c;
-        }
-        
-        /* Filter Section */
         .filter-section {
-            background-color: #4b6584;
-            padding: 15px;
-            border-radius: 6px;
             margin-bottom: 20px;
-        }
-        
-        .filter-row {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             align-items: center;
+            flex-wrap: wrap;
         }
         
-        .filter-row select {
+        .filter-section select, .filter-section button, .filter-section input {
             padding: 8px 12px;
             border-radius: 4px;
-            background-color: #3d566e;
-            color: #ecf0f1;
-            border: 1px solid #5d7a9a;
+            border: none;
         }
         
-        .filter-row button {
-            padding: 8px 15px;
-            background-color: #3498db;
+        .filter-section button {
+            background-color: #4CAF50;
             color: white;
-            border: none;
-            border-radius: 4px;
             cursor: pointer;
         }
         
-        .filter-row button:hover {
-            background-color: #2980b9;
+        .filter-section input {
+            background-color: #666;
+            color: white;
+            border: 1px solid #777;
+            flex: 1;
+            min-width: 200px;
         }
         
-        /* Change Password Modal */
-        .overlay {
+        .view-records-btn {
+            background-color: #2196F3;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        /* Modal Styles */
+        .modal {
             display: none;
             position: fixed;
             top: 0;
@@ -347,633 +297,417 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.7);
             z-index: 1000;
+            overflow: auto;
         }
         
-        .change-password {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #3d566e;
-            padding: 25px;
-            border-radius: 0;
-            z-index: 1001;
-            width: 350px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        .modal-content {
+            background-color: #555;
+            margin: 5% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 900px;
+            border-radius: 5px;
         }
         
-        .change-password h3 {
-            margin-top: 0;
-            color: #f39c12;
-            font-size: 20px;
-            border-bottom: 1px solid #4b6584;
-            padding-bottom: 10px;
-        }
-        
-        .change-password input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            background-color: #4b6584;
-            border: 1px solid #5d7a9a;
-            color: #ecf0f1;
-            border-radius: 0;
-            font-size: 15px;
-        }
-        
-        .change-password-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: flex-end;
-        }
-        
-        .change-password-buttons button {
-            padding: 8px 20px;
-            border: none;
-            border-radius: 0;
+        .close-btn {
+            float: right;
+            font-size: 24px;
             cursor: pointer;
-            font-size: 15px;
-            transition: all 0.3s;
         }
         
-        .change-password-buttons button:first-child {
-            background-color: #95a5a6;
-            color: white;
-        }
-        
-        .change-password-buttons button:first-child:hover {
-            background-color: #7f8c8d;
-        }
-        
-        .change-password-buttons button:last-child {
-            background-color: #2ecc71;
-            color: white;
-        }
-        
-        .change-password-buttons button:last-child:hover {
-            background-color: #27ae60;
-        }
-        
-        /* Update Username Modal */
-        .change-username {
+        /* Change Password Modal */
+        .change-password-modal {
             display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #3d566e;
-            padding: 25px;
-            border-radius: 0;
-            z-index: 1001;
-            width: 350px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
-        .change-username h3 {
-            margin-top: 0;
-            color: #f39c12;
-            font-size: 20px;
-            border-bottom: 1px solid #4b6584;
-            padding-bottom: 10px;
-        }
-        
-        .change-username input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            background-color: #4b6584;
-            border: 1px solid #5d7a9a;
-            color: #ecf0f1;
-            border-radius: 0;
-            font-size: 15px;
-        }
-        
-        .change-username-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: flex-end;
-        }
-        
-        .change-username-buttons button {
-            padding: 8px 20px;
-            border: none;
-            border-radius: 0;
-            cursor: pointer;
-            font-size: 15px;
-            transition: all 0.3s;
-        }
-        
-        .change-username-buttons button:first-child {
-            background-color: #95a5a6;
-            color: white;
-        }
-        
-        .change-username-buttons button:first-child:hover {
-            background-color: #7f8c8d;
-        }
-        
-        .change-username-buttons button:last-child {
-            background-color: #2ecc71;
-            color: white;
-        }
-        
-        .change-username-buttons button:last-child:hover {
-            background-color: #27ae60;
-        }
-        
-        /* View Record Modal */
-        .view-record {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #3d566e;
-            padding: 25px;
-            border-radius: 0;
-            z-index: 1001;
-            width: 600px;
-            max-width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .view-record h3 {
-            margin-top: 0;
-            color: #f39c12;
-            font-size: 20px;
-            border-bottom: 1px solid #4b6584;
-            padding-bottom: 10px;
-        }
-        
-        .view-record-content {
-            margin-top: 15px;
-        }
-        
-        .view-record-group {
-            margin-bottom: 15px;
-        }
-        
-        .view-record-group label {
-            font-weight: bold;
-            color: #bdc3c7;
-            display: block;
-            margin-bottom: 5px;
-        }
-        
-        .view-record-group span {
-            display: block;
-            padding: 8px;
-            background-color: #4b6584;
-            border-radius: 4px;
-        }
-        
-        .view-record-buttons {
-            display: flex;
-            justify-content: flex-end;
+        .change-password-form, .change-username-form, .assign-engineer-form {
             margin-top: 20px;
         }
         
-        .view-record-buttons button {
-            padding: 8px 20px;
-            background-color: #3498db;
+        .change-password-form input, 
+        .change-username-form input,
+        .assign-engineer-form select,
+        .assign-engineer-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #777;
+            background-color: #666;
+            color: white;
+        }
+        
+        .change-password-form button, 
+        .change-username-form button,
+        .assign-engineer-form button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 0;
+            border-radius: 4px;
             cursor: pointer;
         }
         
-        .view-record-buttons button:hover {
-            background-color: #2980b9;
-        }
-        
-        /* File Upload Styles */
-        .file-upload-group {
-            margin-bottom: 20px;
-        }
-        
-        .file-upload-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #bdc3c7;
-        }
-        
-        .file-upload-group input[type="file"] {
-            width: 100%;
-            padding: 8px;
-            background-color: #4b6584;
-            border: 1px dashed #5d7a9a;
-            border-radius: 4px;
-            color: #ecf0f1;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .form-row {
-                flex-direction: column;
-                gap: 0;
+        /* Print Styles */
+        @media print {
+            body * {
+                visibility: hidden;
             }
-            
-            .status-cards {
-                flex-direction: column;
-                gap: 15px;
+            #print-section, #print-section * {
+                visibility: visible;
             }
-            
-            .status-card {
-                min-width: 100%;
+            #print-section {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background-color: white;
+                color: black;
+                padding: 20px;
             }
-            
-            .login-container {
-                width: 90%;
-                height: auto;
-                margin: 40px auto;
-            }
-            
-            .change-password,
-            .change-username,
-            .view-record {
-                width: 90%;
-            }
-            
-            .filter-row {
-                flex-direction: column;
-                align-items: flex-start;
+            .no-print {
+                display: none;
             }
         }
-        
-        /* Extended Dashboard */
-        .dashboard-container {
+
+        /* Engineer assignment section */
+        .engineer-assignment {
+            margin-top: 20px;
+            background-color: #555;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .engineer-info {
             display: flex;
-            flex-direction: column;
-            min-height: calc(100vh - 110px);
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
         }
-        
-        .records-view {
-            flex-grow: 1;
-            overflow-y: auto;
-            max-height: 60vh;
+
+        .engineer-info span {
+            font-weight: bold;
+            color: #4CAF50;
         }
-        
-        /* Pincode Section */
-        .pincode-section {
-            margin-top: 15px;
+
+        .assign-btn {
+            background-color: #2196F3;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <!-- Square Login Section -->
-    <div class="login-container" id="loginSection">
-        <h2>Admin Login</h2>
-        <form id="loginForm">
-            <div class="form-group">
-                <input type="text" id="username" name="username" placeholder="Username" required>
+    <!-- Login Section -->
+    <div class="login-container" id="login-section">
+        <div class="login-box">
+            <h2>Admin Login</h2>
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button onclick="login()">Login</button>
+            <div class="footer">
+                All Rights Reserved By Dev Makwana EBIXCONSOLPORTAL
             </div>
-            <div class="form-group">
-                <input type="password" id="password" name="password" placeholder="Password" required>
-            </div>
-            <input type="submit" value="Login">
-        </form>
-        <div class="copyright">
-            All Rights Reserved By Dev Makwana - EBIXCONSOL PORTAL
         </div>
     </div>
     
-    <!-- Admin Portal -->
-    <div class="admin-portal" id="adminPortal">
+    <!-- Admin Dashboard -->
+    <div class="admin-dashboard" id="admin-dashboard">
         <div class="header">
-            <div class="logo">EBIXCONSOL</div>
-            <div class="portal-title">Admin Portal</div>
-            <div class="clock" id="liveClock"></div>
-            <div class="user-actions">
-                <button id="changeUsernameBtn">Update Username</button>
-                <button id="changePasswordBtn">Change Password</button>
-                <button id="logoutBtn">Logout</button>
+            <div class="logo">EBIXCONSOLPORTAL</div>
+            <div class="clock" id="live-clock"></div>
+            <div class="user-info">
+                <span id="welcome-message">Welcome, Admin</span>
+                <button onclick="openChangeUsernameModal()">Change Username</button>
+                <button onclick="openChangePasswordModal()">Change Password</button>
+                <button onclick="logout()">Logout</button>
             </div>
         </div>
         
-        <div class="content">
-            <div class="dashboard-container">
-                <div class="section">
-                    <h2>Customer Information</h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="customerNumber">Customer Number</label>
-                            <input type="text" id="customerNumber" name="customerNumber" placeholder="Enter customer number">
-                        </div>
-                        <div class="form-group">
-                            <label for="entryDate">Entry Date & Time</label>
-                            <input type="text" id="entryDate" name="entryDate" readonly>
-                        </div>
+        <div class="main-content">
+            <div class="filter-section">
+                <select id="status-filter">
+                    <option value="">All Records</option>
+                    <option value="accept">Accept</option>
+                    <option value="hold">Hold</option>
+                    <option value="running">Running</option>
+                    <option value="public-holiday">Public Holiday</option>
+                </select>
+                <input type="text" id="search-input" placeholder="Search by name, number, etc.">
+                <button onclick="filterRecords()">Filter</button>
+                <button onclick="clearFilters()">Clear Filters</button>
+            </div>
+            
+            <div class="form-section">
+                <h3>Customer Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customer-number">Customer Number</label>
+                        <input type="text" id="customer-number" placeholder="Enter customer number">
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="firstName">First Name</label>
-                            <input type="text" id="firstName" name="firstName" placeholder="Enter first name">
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Last Name</label>
-                            <input type="text" id="lastName" name="lastName" placeholder="Enter last name">
-                        </div>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="Enter name">
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="email">Email ID</label>
-                            <input type="email" id="email" name="email" placeholder="Enter email address">
-                        </div>
-                        <div class="form-group">
-                            <label for="contactNumber">Contact Number</label>
-                            <input type="tel" id="contactNumber" name="contactNumber" placeholder="Enter contact number">
-                        </div>
+                    <div class="form-group">
+                        <label for="surname">Surname</label>
+                        <input type="text" id="surname" placeholder="Enter surname">
                     </div>
-                    
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email ID</label>
+                        <input type="email" id="email" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact">Contact Number</label>
+                        <input type="tel" id="contact" placeholder="Enter contact number">
+                    </div>
+                    <div class="form-group">
+                        <label for="pincode">Pin Code</label>
+                        <input type="text" id="pincode" placeholder="Enter pin code">
+                    </div>
+                </div>
+                
+                <div class="form-row">
                     <div class="form-group">
                         <label for="address">Address</label>
-                        <input type="text" id="address" name="address" placeholder="Enter full address">
+                        <input type="text" id="address" placeholder="Enter address">
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="city">City/Village</label>
-                            <input type="text" id="city" name="city" placeholder="Enter city or village">
-                        </div>
-                        <div class="form-group">
-                            <label for="state">State</label>
-                            <input type="text" id="state" name="state" placeholder="Enter state">
-                        </div>
+                    <div class="form-group">
+                        <label for="city">City/Village</label>
+                        <input type="text" id="city" placeholder="Enter city/village">
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="pincode">Pincode</label>
-                            <input type="text" id="pincode" name="pincode" placeholder="Enter pincode">
-                        </div>
-                        <div class="form-group">
-                            <label for="country">Country</label>
-                            <input type="text" id="country" name="country" value="India" readonly>
-                        </div>
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button class="save-btn" id="saveCustomerBtn">Save Customer Information</button>
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input type="text" id="state" placeholder="Enter state">
                     </div>
                 </div>
                 
-                <div class="section">
-                    <h2>Machine Information</h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="machineName">Machine Name</label>
-                            <input type="text" id="machineName" name="machineName" placeholder="Enter machine name">
-                        </div>
-                        <div class="form-group">
-                            <label for="serialNumber">Serial Number</label>
-                            <input type="text" id="serialNumber" name="serialNumber" placeholder="Enter serial number">
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="warrantyStatus">Warranty Status</label>
-                            <select id="warrantyStatus">
-                                <option value="in_warranty">In Warranty</option>
-                                <option value="out_of_warranty">Out of Warranty</option>
-                                <option value="amc">AMC (Annual Maintenance Contract)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="recordStatus">Record Status</label>
-                            <select id="recordStatus">
-                                <option value="accepted">Accepted</option>
-                                <option value="hold">Hold</option>
-                                <option value="running">Running</option>
-                                <option value="public_holiday">Public Holiday</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="customerRemark">Customer Remark</label>
-                        <textarea id="customerRemark" placeholder="Enter customer remarks"></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="partsChangeRemark">Parts Change Remark</label>
-                        <textarea id="partsChangeRemark" placeholder="Enter parts change remarks"></textarea>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="file-upload-group">
-                            <label for="imageUpload">Upload Image (Invoice/Other)</label>
-                            <input type="file" id="imageUpload" name="imageUpload" accept="image/*">
-                        </div>
-                        <div class="file-upload-group">
-                            <label for="zipUpload">Upload ZIP File</label>
-                            <input type="file" id="zipUpload" name="zipUpload" accept=".zip,.rar">
-                        </div>
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button class="save-btn" id="saveMachineBtn">Save Machine Information</button>
-                        <button class="remove-btn" id="removeRecordBtn">Remove Record</button>
-                        <button class="view-btn" id="viewRecordBtn">View Record</button>
-                    </div>
+                <div class="form-group">
+                    <label>Country</label>
+                    <input type="text" id="country" value="India" readonly>
                 </div>
                 
-                <div class="section records-view">
-                    <h2>Records Summary</h2>
-                    <div class="status-cards">
-                        <div class="status-card" data-status="all">
-                            <h3>Total Records</h3>
-                            <div class="count" id="totalRecords">0</div>
-                        </div>
-                        <div class="status-card" data-status="accepted">
-                            <h3>Accepted</h3>
-                            <div class="count" id="acceptedRecords">0</div>
-                        </div>
-                        <div class="status-card" data-status="hold">
-                            <h3>Hold</h3>
-                            <div class="count" id="holdRecords">0</div>
-                        </div>
-                        <div class="status-card" data-status="running">
-                            <h3>Running</h3>
-                            <div class="count" id="runningRecords">0</div>
-                        </div>
-                        <div class="status-card" data-status="public_holiday">
-                            <h3>Public Holiday</h3>
-                            <div class="count" id="holidayRecords">0</div>
-                        </div>
-                    </div>
-                    
-                    <div class="filter-section">
-                        <div class="filter-row">
-                            <label for="filterStatus">Filter by Status:</label>
-                            <select id="filterStatus">
-                                <option value="all">All Records</option>
-                                <option value="accepted">Accepted</option>
-                                <option value="hold">Hold</option>
-                                <option value="running">Running</option>
-                                <option value="public_holiday">Public Holiday</option>
-                            </select>
-                            <button id="applyFilter">Apply Filter</button>
-                            <button id="clearFilter">Clear Filter</button>
-                        </div>
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button class="print-btn" id="printRecordsBtn">Print All Records</button>
-                    </div>
-                    
-                    <table id="recordsTable">
-                        <thead>
-                            <tr>
-                                <th>Customer No</th>
-                                <th>Name</th>
-                                <th>Contact</th>
-                                <th>Machine</th>
-                                <th>Warranty</th>
-                                <th>Status</th>
-                                <th>Entry Date</th>
-                                <th>Last Update</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Records will be added here dynamically -->
-                        </tbody>
-                    </table>
+                <div class="action-buttons">
+                    <button class="save-btn" onclick="saveCustomerInfo()">Save Customer Info</button>
                 </div>
             </div>
+            
+            <div class="form-section">
+                <h3>Machine Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="machine-name">Machine Name</label>
+                        <input type="text" id="machine-name" placeholder="Enter machine name">
+                    </div>
+                    <div class="form-group">
+                        <label for="serial-number">Serial Number</label>
+                        <input type="text" id="serial-number" placeholder="Enter serial number">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Machine Status</label>
+                    <div class="status-options">
+                        <div class="status-option">
+                            <input type="radio" id="warranty" name="machine-status" value="warranty" checked>
+                            <label for="warranty">Under Warranty</label>
+                        </div>
+                        <div class="status-option">
+                            <input type="radio" id="out-of-warranty" name="machine-status" value="out-of-warranty">
+                            <label for="out-of-warranty">Out of Warranty</label>
+                        </div>
+                        <div class="status-option">
+                            <input type="radio" id="amc" name="machine-status" value="amc">
+                            <label for="amc">AMC</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Record Status</label>
+                    <div class="status-options">
+                        <div class="status-option">
+                            <input type="radio" id="accept" name="record-status" value="accept" checked>
+                            <label for="accept">Accept</label>
+                        </div>
+                        <div class="status-option">
+                            <input type="radio" id="hold" name="record-status" value="hold">
+                            <label for="hold">Hold</label>
+                        </div>
+                        <div class="status-option">
+                            <input type="radio" id="running" name="record-status" value="running">
+                            <label for="running">Running</label>
+                        </div>
+                        <div class="status-option">
+                            <input type="radio" id="public-holiday" name="record-status" value="public-holiday">
+                            <label for="public-holiday">Public Holiday</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="customer-remark">Customer Remark</label>
+                        <input type="text" id="customer-remark" placeholder="Enter customer remark">
+                    </div>
+                    <div class="form-group">
+                        <label for="parts-change-remark">Parts Change Remark</label>
+                        <input type="text" id="parts-change-remark" placeholder="Enter parts change remark">
+                    </div>
+                </div>
+                
+                <div class="file-upload">
+                    <label for="invoice-upload">Upload Invoice</label>
+                    <input type="file" id="invoice-upload">
+                    
+                    <label for="zip-upload" style="margin-top: 10px;">Upload ZIP File</label>
+                    <input type="file" id="zip-upload">
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="save-btn" onclick="saveMachineInfo()">Save Machine Info</button>
+                    <button class="print-btn" onclick="printRecord()">Print Record</button>
+                    <button class="delete-btn" onclick="deleteRecord()">Delete Record</button>
+                </div>
+            </div>
+
+            <!-- Engineer Assignment Section -->
+            <div class="engineer-assignment">
+                <h3>Engineer Assignment</h3>
+                <div id="assigned-engineer-display">
+                    <p>No engineer assigned yet</p>
+                </div>
+                <button class="assign-btn" onclick="openAssignEngineerModal()">Assign Engineer</button>
+            </div>
+            
+            <div class="records-summary">
+                <h3>Records Summary</h3>
+                <div class="summary-row">
+                    <div class="summary-item">
+                        <div class="summary-count" id="total-count">0</div>
+                        <div>Total Records</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-count" id="accept-count">0</div>
+                        <div>Accept</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-count" id="hold-count">0</div>
+                        <div>Hold</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-count" id="running-count">0</div>
+                        <div>Running</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-count" id="holiday-count">0</div>
+                        <div>Public Holiday</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="view-records-btn" onclick="openRecordsModal()">View All Records</button>
         </div>
     </div>
     
+    <!-- Records Modal -->
+    <div id="records-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('records-modal')">&times;</span>
+            <h2>All Records</h2>
+            <table class="records-table">
+                <thead>
+                    <tr>
+                        <th>Customer No</th>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Machine</th>
+                        <th>Serial No</th>
+                        <th>Status</th>
+                        <th>Assigned Engineer</th>
+                        <th>Date</th>
+                        <th class="no-print">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="records-table-body">
+                    <!-- Records will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Print Section (hidden until printing) -->
+    <div id="print-section" style="display: none;">
+        <h2>Customer Record</h2>
+        <div id="print-content"></div>
+    </div>
+    
     <!-- Change Password Modal -->
-    <div class="overlay" id="overlay"></div>
-    <div class="change-password" id="changePasswordModal">
-        <h3>Change Password</h3>
-        <div class="form-group">
-            <input type="password" id="currentPassword" placeholder="Current Password">
-        </div>
-        <div class="form-group">
-            <input type="password" id="newPassword" placeholder="New Password">
-        </div>
-        <div class="form-group">
-            <input type="password" id="confirmPassword" placeholder="Confirm New Password">
-        </div>
-        <div class="change-password-buttons">
-            <button id="cancelChangePassword">Cancel</button>
-            <button id="confirmChangePassword">Change Password</button>
+    <div id="change-password-modal" class="modal change-password-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('change-password-modal')">&times;</span>
+            <h2>Change Password</h2>
+            <div class="change-password-form">
+                <input type="password" id="current-password" placeholder="Current Password">
+                <input type="password" id="new-password" placeholder="New Password">
+                <input type="password" id="confirm-password" placeholder="Confirm New Password">
+                <button onclick="changePassword()">Change Password</button>
+            </div>
         </div>
     </div>
     
     <!-- Change Username Modal -->
-    <div class="change-username" id="changeUsernameModal">
-        <h3>Update Username</h3>
-        <div class="form-group">
-            <input type="text" id="currentUsername" placeholder="Current Username" value="devmakwana12" readonly>
-        </div>
-        <div class="form-group">
-            <input type="text" id="newUsername" placeholder="New Username">
-        </div>
-        <div class="form-group">
-            <input type="password" id="confirmPasswordForUsername" placeholder="Confirm Password">
-        </div>
-        <div class="change-username-buttons">
-            <button id="cancelChangeUsername">Cancel</button>
-            <button id="confirmChangeUsername">Update Username</button>
+    <div id="change-username-modal" class="modal change-password-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('change-username-modal')">&times;</span>
+            <h2>Change Username</h2>
+            <div class="change-username-form">
+                <input type="text" id="current-username" placeholder="Current Username">
+                <input type="text" id="new-username" placeholder="New Username">
+                <input type="password" id="username-password" placeholder="Current Password">
+                <button onclick="changeUsername()">Change Username</button>
+            </div>
         </div>
     </div>
-    
-    <!-- View Record Modal -->
-    <div class="view-record" id="viewRecordModal">
-        <h3>View Record Details</h3>
-        <div class="view-record-content" id="viewRecordContent">
-            <!-- Record details will be inserted here -->
-        </div>
-        <div class="view-record-buttons">
-            <button id="closeViewRecord">Close</button>
+
+    <!-- Assign Engineer Modal -->
+    <div id="assign-engineer-modal" class="modal change-password-modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('assign-engineer-modal')">&times;</span>
+            <h2>Assign Engineer</h2>
+            <div class="assign-engineer-form">
+                <select id="engineer-select">
+                    <option value="">Select Engineer</option>
+                    <option value="EI102019004">Dev Makwana (EI102019004)</option>
+                    <option value="EI102024889">Mahesh Gupta (EI102024889)</option>
+                    <option value="EI011409023">Arvind Sukhla (EI011409023)</option>
+                </select>
+                <input type="text" id="customer-number-for-assignment" placeholder="Customer Number" readonly>
+                <button onclick="assignEngineer()">Assign Engineer</button>
+            </div>
         </div>
     </div>
     
     <script>
-        // Current user credentials
-        let currentUser = {
-            username: 'devmakwana12',
-            password: '12345'
+        // Sample records data
+        let records = [];
+        let currentUsername = 'devmakwana12';
+        let currentPassword = '12345';
+        
+        // Engineer data
+        const engineers = {
+            'EI102019004': { name: 'Dev Makwana', id: 'EI102019004' },
+            'EI102024889': { name: 'Mahesh Gupta', id: 'EI102024889' },
+            'EI011409023': { name: 'Arvind Sukhla', id: 'EI011409023' }
         };
         
-        // Login functionality
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            if (username === currentUser.username && password === currentUser.password) {
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('adminPortal').style.display = 'block';
-                
-                // Set current date
-                const now = new Date();
-                document.getElementById('entryDate').value = formatDateTime(now);
-                
-                // Start clock
-                updateClock();
-                setInterval(updateClock, 1000);
-            } else {
-                alert('Invalid username or password');
-            }
-        });
-        
-        // Format date and time for display
-        function formatDateTime(date) {
-            const options = { 
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true
-            };
-            return date.toLocaleString('en-IN', options);
-        }
-        
-        // Logout functionality
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            if (confirm('Are you sure you want to logout?')) {
-                document.getElementById('adminPortal').style.display = 'none';
-                document.getElementById('loginSection').style.display = 'block';
-                document.getElementById('loginForm').reset();
-                // Clear all fields
-                clearAllFields();
-            }
-        });
-        
-        // Clear all form fields
-        function clearAllFields() {
-            document.getElementById('customerNumber').value = '';
-            document.getElementById('firstName').value = '';
-            document.getElementById('lastName').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('contactNumber').value = '';
-            document.getElementById('address').value = '';
-            document.getElementById('city').value = '';
-            document.getElementById('state').value = '';
-            document.getElementById('pincode').value = '';
-            document.getElementById('machineName').value = '';
-            document.getElementById('serialNumber').value = '';
-            document.getElementById('customerRemark').value = '';
-            document.getElementById('partsChangeRemark').value = '';
-            document.getElementById('imageUpload').value = '';
-            document.getElementById('zipUpload').value = '';
-        }
-        
-        // Update clock
+        // Update clock every second
         function updateClock() {
             const now = new Date();
             const options = { 
@@ -986,423 +720,875 @@
                 month: '2-digit',
                 year: 'numeric'
             };
-            document.getElementById('liveClock').textContent = 'India: ' + now.toLocaleString('en-IN', options);
+            const formatter = new Intl.DateTimeFormat('en-IN', options);
+            const parts = formatter.formatToParts(now);
+            
+            let dateTime = {};
+            parts.forEach(part => {
+                dateTime[part.type] = part.value;
+            });
+            
+            const clockStr = `${dateTime.day}/${dateTime.month}/${dateTime.year} ${dateTime.hour}:${dateTime.minute}:${dateTime.second} ${dateTime.dayPeriod}`;
+            document.getElementById('live-clock').textContent = clockStr;
         }
         
-        // Records storage
-        let records = [];
-        let currentFilter = 'all';
+        setInterval(updateClock, 1000);
+        updateClock();
         
-        // Save customer
-        document.getElementById('saveCustomerBtn').addEventListener('click', function() {
-            const customerNumber = document.getElementById('customerNumber').value;
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
+        // Login function
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === currentUsername && password === currentPassword) {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('admin-dashboard').style.display = 'block';
+                document.getElementById('welcome-message').textContent = `Welcome, ${currentUsername}`;
+                updateSummary();
+            } else {
+                alert('Invalid username or password');
+            }
+        }
+        
+        // Logout function
+        function logout() {
+            document.getElementById('login-section').style.display = 'flex';
+            document.getElementById('admin-dashboard').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+        
+        // Save customer information
+        function saveCustomerInfo() {
+            const customerNumber = document.getElementById('customer-number').value;
+            const name = document.getElementById('name').value;
+            const surname = document.getElementById('surname').value;
             const email = document.getElementById('email').value;
-            const contactNumber = document.getElementById('contactNumber').value;
+            const contact = document.getElementById('contact').value;
             const address = document.getElementById('address').value;
             const city = document.getElementById('city').value;
             const state = document.getElementById('state').value;
             const pincode = document.getElementById('pincode').value;
-            const country = document.getElementById('country').value;
-            const entryDate = document.getElementById('entryDate').value;
             
-            if (!customerNumber || !firstName || !contactNumber) {
-                alert('Please fill in required fields: Customer Number, First Name, and Contact Number');
+            if (!customerNumber || !name || !contact) {
+                alert('Please fill in required fields: Customer Number, Name, and Contact');
                 return;
             }
             
-            // In a real app, you would save this to a database
-            alert('Customer information saved successfully!');
-        });
-        
-        // Save machine
-        document.getElementById('saveMachineBtn').addEventListener('click', function() {
-            const customerNumber = document.getElementById('customerNumber').value;
-            const machineName = document.getElementById('machineName').value;
-            const serialNumber = document.getElementById('serialNumber').value;
-            const warrantyStatus = document.getElementById('warrantyStatus').value;
-            const recordStatus = document.getElementById('recordStatus').value;
-            const customerRemark = document.getElementById('customerRemark').value;
-            const partsChangeRemark = document.getElementById('partsChangeRemark').value;
-            
-            if (!customerNumber || !machineName || !serialNumber) {
-                alert('Please fill in required fields: Customer Number, Machine Name, and Serial Number');
-                return;
-            }
-            
-            // Check if this customer already has a record
+            // Check if this is an existing record
             const existingIndex = records.findIndex(r => r.customerNumber === customerNumber);
-            const now = new Date();
             
             if (existingIndex >= 0) {
                 // Update existing record
                 records[existingIndex] = {
                     ...records[existingIndex],
-                    machineName,
-                    serialNumber,
-                    warrantyStatus,
-                    recordStatus,
-                    customerRemark,
-                    partsChangeRemark,
-                    pincode: document.getElementById('pincode').value,
-                    statusChangeDate: formatDateTime(now)
+                    name,
+                    surname,
+                    email,
+                    contact,
+                    address,
+                    city,
+                    state,
+                    pincode,
+                    updatedAt: new Date().toISOString()
                 };
             } else {
-                // Create a new record
-                const record = {
+                // Create new record with just customer info (machine info will be added later)
+                records.push({
                     customerNumber,
-                    firstName: document.getElementById('firstName').value,
-                    lastName: document.getElementById('lastName').value,
-                    contactNumber: document.getElementById('contactNumber').value,
-                    email: document.getElementById('email').value,
-                    address: document.getElementById('address').value,
-                    city: document.getElementById('city').value,
-                    state: document.getElementById('state').value,
-                    pincode: document.getElementById('pincode').value,
-                    country: document.getElementById('country').value,
+                    name,
+                    surname,
+                    email,
+                    contact,
+                    address,
+                    city,
+                    state,
+                    pincode,
+                    country: 'India',
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    status: 'accept', // default status
+                    assignedEngineer: null
+                });
+            }
+            
+            alert('Customer information saved successfully');
+            updateSummary();
+            updateAssignedEngineerDisplay(customerNumber);
+        }
+        
+        // Save machine information
+        function saveMachineInfo() {
+            const customerNumber = document.getElementById('customer-number').value;
+            const machineName = document.getElementById('machine-name').value;
+            const serialNumber = document.getElementById('serial-number').value;
+            const machineStatus = document.querySelector('input[name="machine-status"]:checked').value;
+            const recordStatus = document.querySelector('input[name="record-status"]:checked').value;
+            const customerRemark = document.getElementById('customer-remark').value;
+            const partsChangeRemark = document.getElementById('parts-change-remark').value;
+            
+            if (!customerNumber) {
+                alert('Please save customer information first');
+                return;
+            }
+            
+            if (!machineName || !serialNumber) {
+                alert('Please fill in machine name and serial number');
+                return;
+            }
+            
+            const recordIndex = records.findIndex(r => r.customerNumber === customerNumber);
+            
+            if (recordIndex >= 0) {
+                records[recordIndex] = {
+                    ...records[recordIndex],
                     machineName,
                     serialNumber,
-                    warrantyStatus,
-                    recordStatus,
+                    machineStatus,
+                    status: recordStatus,
                     customerRemark,
                     partsChangeRemark,
-                    entryDate: formatDateTime(now),
-                    statusChangeDate: formatDateTime(now)
+                    updatedAt: new Date().toISOString()
                 };
                 
-                // Add to records array
-                records.push(record);
+                alert('Machine information saved successfully');
+                updateSummary();
+            } else {
+                alert('Please save customer information first');
             }
-            
-            // Update UI
-            updateRecordsTable();
-            updateStatusCounts();
-            
-            alert('Machine information saved successfully! Records updated below.');
-            
-            // Scroll to records section
-            document.querySelector('.records-view').scrollIntoView({ behavior: 'smooth' });
-        });
+        }
         
-        // Update records table with optional filter
-        function updateRecordsTable(filterStatus = 'all') {
-            const tbody = document.querySelector('#recordsTable tbody');
-            tbody.innerHTML = '';
+        // Update summary counts
+        function updateSummary() {
+            document.getElementById('total-count').textContent = records.length;
+            document.getElementById('accept-count').textContent = records.filter(r => r.status === 'accept').length;
+            document.getElementById('hold-count').textContent = records.filter(r => r.status === 'hold').length;
+            document.getElementById('running-count').textContent = records.filter(r => r.status === 'running').length;
+            document.getElementById('holiday-count').textContent = records.filter(r => r.status === 'public-holiday').length;
+        }
+        
+        // Filter records
+        function filterRecords() {
+            const status = document.getElementById('status-filter').value;
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
             
             let filteredRecords = records;
-            if (filterStatus !== 'all') {
-                filteredRecords = records.filter(r => r.recordStatus === filterStatus);
+            
+            if (status) {
+                filteredRecords = filteredRecords.filter(r => r.status === status);
             }
             
-            if (filteredRecords.length === 0) {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td colspan="9" style="text-align:center;">No records found</td>`;
-                tbody.appendChild(tr);
-                return;
+            if (searchTerm) {
+                filteredRecords = filteredRecords.filter(r => 
+                    (r.customerNumber && r.customerNumber.toLowerCase().includes(searchTerm)) ||
+                    (r.name && r.name.toLowerCase().includes(searchTerm)) ||
+                    (r.surname && r.surname.toLowerCase().includes(searchTerm)) ||
+                    (r.contact && r.contact.toLowerCase().includes(searchTerm)) ||
+                    (r.machineName && r.machineName.toLowerCase().includes(searchTerm)) ||
+                    (r.serialNumber && r.serialNumber.toLowerCase().includes(searchTerm)) ||
+                    (r.assignedEngineer && r.assignedEngineer.name.toLowerCase().includes(searchTerm)) ||
+                    (r.assignedEngineer && r.assignedEngineer.id.toLowerCase().includes(searchTerm))
+                );
             }
             
-            filteredRecords.forEach(record => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${record.customerNumber}</td>
-                    <td>${record.firstName} ${record.lastName}</td>
-                    <td>${record.contactNumber}</td>
-                    <td>${record.machineName}</td>
-                    <td>${formatWarrantyStatus(record.warrantyStatus)}</td>
-                    <td>${formatStatus(record.recordStatus)}</td>
-                    <td>${record.entryDate}</td>
-                    <td>${record.statusChangeDate}</td>
-                    <td><button class="view-btn" onclick="viewRecord('${record.customerNumber}')">View</button></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-        
-        // View record details
-        function viewRecord(customerNumber) {
-            const record = records.find(r => r.customerNumber === customerNumber);
-            if (!record) return;
+            // Update the records table with filtered results
+            updateRecordsTable(filteredRecords);
             
-            const content = document.getElementById('viewRecordContent');
-            content.innerHTML = `
-                <div class="view-record-group">
-                    <label>Customer Number:</label>
-                    <span>${record.customerNumber}</span>
-                </div>
-                <div class="view-record-group">
-                    <label>Name:</label>
-                    <span>${record.firstName} ${record.lastName}</span>
-                </div>
-                <div class="view-record-group">
-                    <label>Email:</label>
-                    <span>${record.email || 'N/A'}</span>
-                </div>
-                <div class="view-record-group">
-                    <label>Contact Number:</label>
-                    <span>${record.contactNumber}</span>
-                </div>
-                <div class="view-record-group">
-                    <label>Address:</label>
-                    <span>${record.address || 'N/A'}</span>
-                </div>
-                <div class="view-record-group">
-                    <label>City/Village:</label>
-                    <span>${record.city || 'N/A'}</span>
-                </div>
-                <div class="view-record-group">
-                    <label>State:</label>
-                    <span>${record.state || 'N/A'}</span>
-                </div>
-                <div class="view-record-group">
-                    <label>Pincode:</label>
-                    <span>${record.pincode || 'N/A'}</span>
-                </div>
-                <div class="view-record-group">
-                    <label>Country:</label>
-                    <span>${record.country || 'N/A'}</span>
-                </div>
-                <div class="view-record-group">
-                    <label>Machine Name:</label>
-                    <span>${record.machineName || 'N/A'}</span>
-                </div>
-                <div class="view-record-group">
-                    <label>Serial Number:</label>
-                    <span>${record.serialNumber || 'N/A'}</span>
-                </div>
-                <div class="view-record-group">
-                    <label>Warranty Status:</label>
-                    <span>${formatWarrantyStatus(record.warrantyStatus)}</span>
-                </div>
-                <div class="view-record-group">
-                    <label>Record Status:</label>
-                    <span>${formatStatus(record.recordStatus)}</span>
-                </div>
-                <div class="view-record-group">
-                    <label>Customer Remark:</label>
-                    <span>${record.customerRemark || 'N/A'}</span>
-                </div>
-                <div class="view-record-group">
-                    <label>Parts Change Remark:</label>
-                    <span>${record.partsChangeRemark || 'N/A'}</span>
-                </div>
-                <div class="view-record-group">
-                    <label>Entry Date:</label>
-                    <span>${record.entryDate}</span>
-                </div>
-                <div class="view-record-group">
-                    <label>Last Update:</label>
-                    <span>${record.statusChangeDate}</span>
-                </div>
-            `;
+            // Update the counts to reflect filtered records
+            document.getElementById('total-count').textContent = filteredRecords.length;
+            document.getElementById('accept-count').textContent = filteredRecords.filter(r => r.status === 'accept').length;
+            document.getElementById('hold-count').textContent = filteredRecords.filter(r => r.status === 'hold').length;
+            document.getElementById('running-count').textContent = filteredRecords.filter(r => r.status === 'running').length;
+            document.getElementById('holiday-count').textContent = filteredRecords.filter(r => r.status === 'public-holiday').length;
+        }
+        
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('status-filter').value = '';
+            document.getElementById('search-input').value = '';
+            updateRecordsTable(records);
+            updateSummary();
+        }
+        
+        // Update records table
+        function updateRecordsTable(recordsToShow) {
+            const tbody = document.getElementById('records-table-body');
             
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('viewRecordModal').style.display = 'block';
-        }
-        
-        // Close view record modal
-        document.getElementById('closeViewRecord').addEventListener('click', function() {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('viewRecordModal').style.display = 'none';
-        });
-        
-        // View current record
-        document.getElementById('viewRecordBtn').addEventListener('click', function() {
-            const customerNumber = document.getElementById('customerNumber').value;
-            if (!customerNumber) {
-                alert('Please enter a Customer Number to view');
-                return;
-            }
+            // Clear existing rows
+            tbody.innerHTML = '';
             
-            viewRecord(customerNumber);
-        });
-        
-        // Format warranty status for display
-        function formatWarrantyStatus(status) {
-            const statusMap = {
-                'in_warranty': 'In Warranty',
-                'out_of_warranty': 'Out of Warranty',
-                'amc': 'AMC'
-            };
-            return statusMap[status] || status;
-        }
-        
-        // Format status for display
-        function formatStatus(status) {
-            const statusMap = {
-                'accepted': 'Accepted',
-                'hold': 'Hold',
-                'running': 'Running',
-                'public_holiday': 'Public Holiday'
-            };
-            return statusMap[status] || status;
-        }
-        
-        // Update status counts
-        function updateStatusCounts() {
-            document.getElementById('totalRecords').textContent = records.length;
-            document.getElementById('acceptedRecords').textContent = 
-                records.filter(r => r.recordStatus === 'accepted').length;
-            document.getElementById('holdRecords').textContent = 
-                records.filter(r => r.recordStatus === 'hold').length;
-            document.getElementById('runningRecords').textContent = 
-                records.filter(r => r.recordStatus === 'running').length;
-            document.getElementById('holidayRecords').textContent = 
-                records.filter(r => r.recordStatus === 'public_holiday').length;
-        }
-        
-        // Remove record
-        document.getElementById('removeRecordBtn').addEventListener('click', function() {
-            const customerNumber = document.getElementById('customerNumber').value;
-            if (!customerNumber) {
-                alert('Please enter a Customer Number to remove');
-                return;
-            }
-            
-            if (confirm('Are you sure you want to remove this record?')) {
-                records = records.filter(r => r.customerNumber !== customerNumber);
-                updateRecordsTable(currentFilter);
-                updateStatusCounts();
-                alert('Record removed successfully!');
+            // Add records to table
+            recordsToShow.forEach(record => {
+                const row = document.createElement('tr');
                 
-                // Clear form
-                document.getElementById('customerNumber').value = '';
-                document.getElementById('machineName').value = '';
-                document.getElementById('serialNumber').value = '';
-                document.getElementById('customerRemark').value = '';
-                document.getElementById('partsChangeRemark').value = '';
-            }
-        });
-        
-        // Print records
-        document.getElementById('printRecordsBtn').addEventListener('click', function() {
-            window.print();
-        });
-        
-        // Filter records by status
-        document.getElementById('applyFilter').addEventListener('click', function() {
-            currentFilter = document.getElementById('filterStatus').value;
-            updateRecordsTable(currentFilter);
-        });
-        
-        // Clear filter
-        document.getElementById('clearFilter').addEventListener('click', function() {
-            document.getElementById('filterStatus').value = 'all';
-            currentFilter = 'all';
-            updateRecordsTable('all');
-        });
-        
-        // Filter by clicking on status cards
-        document.querySelectorAll('.status-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const status = this.getAttribute('data-status');
-                document.getElementById('filterStatus').value = status;
-                currentFilter = status;
-                updateRecordsTable(status);
+                const date = new Date(record.updatedAt);
+                const dateStr = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
+                
+                const engineerInfo = record.assignedEngineer 
+                    ? `${record.assignedEngineer.name} (${record.assignedEngineer.id})` 
+                    : 'Not assigned';
+                
+                row.innerHTML = `
+                    <td>${record.customerNumber}</td>
+                    <td>${record.name} ${record.surname || ''}</td>
+                    <td>${record.contact}</td>
+                    <td>${record.machineName || '-'}</td>
+                    <td>${record.serialNumber || '-'}</td>
+                    <td>${record.status ? record.status.charAt(0).toUpperCase() + record.status.slice(1).replace('-', ' ') : '-'}</td>
+                    <td>${engineerInfo}</td>
+                    <td>${dateStr}</td>
+                    <td class="no-print">
+                        <button onclick="loadRecord('${record.customerNumber}')" style="padding: 5px 10px; background-color: #2196F3; color: white; border: none; border-radius: 3px; cursor: pointer;">Load</button>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
             });
-        });
-        
-        // Change password modal
-        document.getElementById('changePasswordBtn').addEventListener('click', function() {
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('changePasswordModal').style.display = 'block';
-        });
-        
-        document.getElementById('cancelChangePassword').addEventListener('click', function() {
-            closePasswordModal();
-        });
-        
-        document.getElementById('overlay').addEventListener('click', function() {
-            closePasswordModal();
-            closeUsernameModal();
-            closeViewRecordModal();
-        });
-        
-        function closePasswordModal() {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('changePasswordModal').style.display = 'none';
-            document.getElementById('currentPassword').value = '';
-            document.getElementById('newPassword').value = '';
-            document.getElementById('confirmPassword').value = '';
         }
         
-        function closeViewRecordModal() {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('viewRecordModal').style.display = 'none';
-        }
-        
-        document.getElementById('confirmChangePassword').addEventListener('click', function() {
-            const currentPassword = document.getElementById('currentPassword').value;
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
+        // Load record into form
+        function loadRecord(customerNumber) {
+            const record = records.find(r => r.customerNumber === customerNumber);
             
-            if (currentPassword !== currentUser.password) {
+            if (record) {
+                document.getElementById('customer-number').value = record.customerNumber || '';
+                document.getElementById('name').value = record.name || '';
+                document.getElementById('surname').value = record.surname || '';
+                document.getElementById('email').value = record.email || '';
+                document.getElementById('contact').value = record.contact || '';
+                document.getElementById('address').value = record.address || '';
+                document.getElementById('city').value = record.city || '';
+                document.getElementById('state').value = record.state || '';
+                document.getElementById('pincode').value = record.pincode || '';
+                
+                document.getElementById('machine-name').value = record.machineName || '';
+                document.getElementById('serial-number').value = record.serialNumber || '';
+                
+                // Set machine status radio
+                if (record.machineStatus) {
+                    document.querySelector(`input[name="machine-status"][value="${record.machineStatus}"]`).checked = true;
+                }
+                
+                // Set record status radio
+                if (record.status) {
+                    document.querySelector(`input[name="record-status"][value="${record.status}"]`).checked = true;
+                }
+                
+                document.getElementById('customer-remark').value = record.customerRemark || '';
+                document.getElementById('parts-change-remark').value = record.partsChangeRemark || '';
+                
+                // Update assigned engineer display
+                updateAssignedEngineerDisplay(record.customerNumber);
+                
+                closeModal('records-modal');
+            }
+        }
+        
+        // Open records modal
+        function openRecordsModal() {
+            const modal = document.getElementById('records-modal');
+            updateRecordsTable(records);
+            modal.style.display = 'block';
+        }
+        
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Open change password modal
+        function openChangePasswordModal() {
+            document.getElementById('current-password').value = '';
+            document.getElementById('new-password').value = '';
+            document.getElementById('confirm-password').value = '';
+            document.getElementById('change-password-modal').style.display = 'block';
+        }
+        
+        // Open change username modal
+        function openChangeUsernameModal() {
+            document.getElementById('current-username').value = currentUsername;
+            document.getElementById('new-username').value = '';
+            document.getElementById('username-password').value = '';
+            document.getElementById('change-username-modal').style.display = 'block';
+        }
+
+        // Open assign engineer modal
+        function openAssignEngineerModal() {
+            const customerNumber = document.getElementById('customer-number').value;
+            
+            if (!customerNumber) {
+                alert('Please enter a customer number first');
+                return;
+            }
+            
+            document.getElementById('customer-number-for-assignment').value = customerNumber;
+            document.getElementById('engineer-select').value = '';
+            
+            // Check if there's already an assigned engineer
+            const record = records.find(r => r.customerNumber === customerNumber);
+            if (record && record.assignedEngineer) {
+                document.getElementById('engineer-select').value = record.assignedEngineer.id;
+            }
+            
+            document.getElementById('assign-engineer-modal').style.display = 'block';
+        }
+        
+        // Assign engineer to record
+        function assignEngineer() {
+            const customerNumber = document.getElementById('customer-number-for-assignment').value;
+            const engineerId = document.getElementById('engineer-select').value;
+            
+            if (!customerNumber) {
+                alert('Customer number is required');
+                return;
+            }
+            
+            if (!engineerId) {
+                alert('Please select an engineer');
+                return;
+            }
+            
+            const recordIndex = records.findIndex(r => r.customerNumber === customerNumber);
+            
+            if (recordIndex >= 0) {
+                records[recordIndex].assignedEngineer = {
+                    id: engineerId,
+                    name: engineers[engineerId].name
+                };
+                
+                alert(`Engineer ${engineers[engineerId].name} assigned successfully`);
+                updateAssignedEngineerDisplay(customerNumber);
+                closeModal('assign-engineer-modal');
+            } else {
+                alert('Record not found. Please save customer information first.');
+            }
+        }
+        
+        // Update assigned engineer display
+        function updateAssignedEngineerDisplay(customerNumber) {
+            const displayDiv = document.getElementById('assigned-engineer-display');
+            const record = records.find(r => r.customerNumber === customerNumber);
+            
+            if (record && record.assignedEngineer) {
+                displayDiv.innerHTML = `
+                    <div class="engineer-info">
+                        <span>Assigned Engineer:</span>
+                        <div>${record.assignedEngineer.name} (${record.assignedEngineer.id})</div>
+                    </div>
+                `;
+            } else {
+                displayDiv.innerHTML = '<p>No engineer assigned yet</p>';
+            }
+        }
+        
+        // Change password
+        function changePassword() {
+            const current = document.getElementById('current-password').value;
+            const newPass = document.getElementById('new-password').value;
+            const confirm = document.getElementById('confirm-password').value;
+            
+            if (current !== currentPassword) {
                 alert('Current password is incorrect');
                 return;
             }
             
-            if (newPassword !== confirmPassword) {
+            if (newPass !== confirm) {
                 alert('New passwords do not match');
                 return;
             }
             
-            if (newPassword.length < 5) {
-                alert('Password must be at least 5 characters long');
+            if (newPass.length < 5) {
+                alert('Password must be at least 5 characters');
                 return;
             }
             
-            // Update password
-            currentUser.password = newPassword;
-            alert('Password changed successfully!');
-            closePasswordModal();
-        });
-        
-        // Change username modal
-        document.getElementById('changeUsernameBtn').addEventListener('click', function() {
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('changeUsernameModal').style.display = 'block';
-        });
-        
-        document.getElementById('cancelChangeUsername').addEventListener('click', function() {
-            closeUsernameModal();
-        });
-        
-        function closeUsernameModal() {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('changeUsernameModal').style.display = 'none';
-            document.getElementById('newUsername').value = '';
-            document.getElementById('confirmPasswordForUsername').value = '';
+            currentPassword = newPass;
+            alert('Password changed successfully');
+            closeModal('change-password-modal');
         }
         
-        document.getElementById('confirmChangeUsername').addEventListener('click', function() {
-            const newUsername = document.getElementById('newUsername').value;
-            const confirmPassword = document.getElementById('confirmPasswordForUsername').value;
+        // Change username
+        function changeUsername() {
+            const current = document.getElementById('current-username').value;
+            const newUser = document.getElementById('new-username').value;
+            const password = document.getElementById('username-password').value;
             
-            if (!newUsername) {
-                alert('Please enter a new username');
+            if (current !== currentUsername) {
+                alert('Current username is incorrect');
                 return;
             }
             
-            if (confirmPassword !== currentUser.password) {
+            if (password !== currentPassword) {
                 alert('Password is incorrect');
                 return;
             }
             
-            // Update username
-            currentUser.username = newUsername;
-            document.getElementById('currentUsername').value = newUsername;
-            alert('Username updated successfully!');
-            closeUsernameModal();
-        });
-        
-        // Auto-fill demo data for testing (can be removed in production)
-        function fillDemoData() {
-            document.getElementById('username').value = currentUser.username;
-            document.getElementById('password').value = currentUser.password;
+            if (newUser.length < 5) {
+                alert('Username must be at least 5 characters');
+                return;
+            }
+            
+            currentUsername = newUser;
+            document.getElementById('welcome-message').textContent = `Welcome, ${currentUsername}`;
+            alert('Username changed successfully');
+            closeModal('change-username-modal');
         }
         
-        // Call this function to auto-fill login for testing
-        fillDemoData();
+        // Print record
+        function printRecord() {
+            const customerNumber = document.getElementById('customer-number').value;
+            const record = records.find(r => r.customerNumber === customerNumber);
+            
+            if (!record) {
+                alert('No record found for this customer number');
+                return;
+            }
+            
+            const printContent = document.getElementById('print-content');
+            printContent.innerHTML = '';
+            
+            // Format date
+            const date = new Date(record.updatedAt);
+            const dateStr = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
+            
+            // Engineer info
+            const engineerInfo = record.assignedEngineer 
+                ? `${record.assignedEngineer.name} (${record.assignedEngineer.id})` 
+                : 'Not assigned';
+            
+            // Create print content
+            const printDiv = document.createElement('div');
+            printDiv.innerHTML = `
+                <h3>Customer Information</h3>
+                <p><strong>Customer Number:</strong> ${record.customerNumber || '-'}</p>
+                <p><strong>Name:</strong> ${record.name || '-'} ${record.surname || ''}</p>
+                <p><strong>Email:</strong> ${record.email || '-'}</p>
+                <p><strong>Contact:</strong> ${record.contact || '-'}</p>
+                <p><strong>Address:</strong> ${record.address || '-'}</p>
+                <p><strong>City/Village:</strong> ${record.city || '-'}</p>
+                <p><strong>State:</strong> ${record.state || '-'}</p>
+                <p><strong>Pin Code:</strong> ${record.pincode || '-'}</p>
+                <p><strong>Country:</strong> ${record.country || '-'}</p>
+                
+                <h3 style="margin-top: 20px;">Machine Information</h3>
+                <p><strong>Machine Name:</strong> ${record.machineName || '-'}</p>
+                <p><strong>Serial Number:</strong> ${record.serialNumber || '-'}</p>
+                <p><strong>Machine Status:</strong> ${record.machineStatus ? record.machineStatus.charAt(0).toUpperCase() + record.machineStatus.slice(1).replace('-', ' ') : '-'}</p>
+                <p><strong>Record Status:</strong> ${record.status ? record.status.charAt(0).toUpperCase() + record.status.slice(1).replace('-', ' ') : '-'}</p>
+                <p><strong>Customer Remark:</strong> ${record.customerRemark || '-'}</p>
+                <p><strong>Parts Change Remark:</strong> ${record.partsChangeRemark || '-'}</p>
+                <p><strong>Assigned Engineer:</strong> ${engineerInfo}</p>
+                <p><strong>Last Updated:</strong> ${dateStr}</p>
+            `;
+            
+            printContent.appendChild(printDiv);
+            
+            // Trigger print
+            window.print();
+        }
+        
+        // Delete record
+        function deleteRecord() {
+            const customerNumber = document.getElementById('customer-number').value;
+            
+            if (!customerNumber) {
+                alert('Please enter a customer number');
+                return;
+            }
+            
+            if (confirm('Are you sure you want to delete this record?')) {
+                records = records.filter(r => r.customerNumber !== customerNumber);
+                alert('Record deleted successfully');
+                clearForm();
+                updateSummary();
+            }
+        }
+        
+        // Clear form
+        function clearForm() {
+            document.getElementById('customer-number').value = '';
+            document.getElementById('name').value = '';
+            document.getElementById('surname').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('contact').value = '';
+            document.getElementById('address').value = '';
+            document.getElementById('city').value = '';
+            document.getElementById('state').value = '';
+            document.getElementById('pincode').value = '';
+            document.getElementById('machine-name').value = '';
+            document.getElementById('serial-number').value = '';
+            document.getElementById('customer-remark').value = '';
+            document.getElementById('parts-change-remark').value = '';
+            document.getElementById('invoice-upload').value = '';
+            document.getElementById('zip-upload').value = '';
+            
+            // Clear engineer display
+            document.getElementById('assigned-engineer-display').innerHTML = '<p>No engineer assigned yet</p>';
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBIXCONSOLPORTAL - Admin Portal</title>
+    <style>
+        /* Previous CSS styles remain the same */
+        /* Add these new styles for the monthly/yearly records section */
+        
+        .records-stats {
+            background-color: #555;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
+        .stats-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .stats-filters select {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: none;
+            background-color: #666;
+            color: white;
+        }
+        
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background-color: #666;
+        }
+        
+        .stats-table th, .stats-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #777;
+        }
+        
+        .stats-table th {
+            background-color: #444;
+            color: #4CAF50;
+        }
+        
+        .stats-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .stats-actions button {
+            padding: 8px 15px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Previous HTML content remains the same until the main-content section -->
+    
+    <div class="main-content">
+        <!-- Previous filter section remains the same -->
+        <div class="filter-section">
+            <select id="status-filter">
+                <option value="">All Records</option>
+                <option value="accept">Accept</option>
+                <option value="hold">Hold</option>
+                <option value="running">Running</option>
+                <option value="public-holiday">Public Holiday</option>
+            </select>
+            <select id="customer-name-filter">
+                <option value="">All Customers</option>
+                <!-- Customer names will be populated by JavaScript -->
+            </select>
+            <input type="text" id="search-input" placeholder="Search by name, number, etc.">
+            <button onclick="filterRecords()">Filter</button>
+            <button onclick="clearFilters()">Clear Filters</button>
+        </div>
+        
+        <!-- Previous form sections remain the same -->
+        
+        <!-- New Monthly/Yearly Records Section -->
+        <div class="records-stats">
+            <h3>Monthly/Yearly Records</h3>
+            <div class="stats-filters">
+                <select id="stats-year">
+                    <option value="">All Years</option>
+                    <!-- Years will be populated by JavaScript -->
+                </select>
+                <select id="stats-month">
+                    <option value="">All Months</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+                <button onclick="updateStatsTable()">Show Records</button>
+            </div>
+            
+            <table class="stats-table">
+                <thead>
+                    <tr>
+                        <th>Month/Year</th>
+                        <th>Total Records</th>
+                        <th>Accept</th>
+                        <th>Hold</th>
+                        <th>Running</th>
+                        <th>Public Holiday</th>
+                    </tr>
+                </thead>
+                <tbody id="stats-table-body">
+                    <!-- Stats will be populated here -->
+                </tbody>
+            </table>
+            
+            <div class="stats-actions">
+                <button onclick="saveStatsToCSV()">Save as CSV</button>
+                <button onclick="printStats()">Print Stats</button>
+            </div>
+        </div>
+        
+        <!-- Previous sections (engineer assignment, records summary, etc.) remain the same -->
+    </div>
+    
+    <!-- Previous modals remain the same -->
+    
+    <script>
+        // Previous JavaScript code remains the same until the end
+        
+        // Add these new functions for the monthly/yearly records functionality
+        
+        // Initialize customer name filter dropdown
+        function initCustomerNameFilter() {
+            const customerFilter = document.getElementById('customer-name-filter');
+            const customerNames = [...new Set(records.map(r => r.name))].sort();
+            
+            customerNames.forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                customerFilter.appendChild(option);
+            });
+        }
+        
+        // Initialize year filter dropdown
+        function initYearFilter() {
+            const yearFilter = document.getElementById('stats-year');
+            const years = [...new Set(records.map(r => new Date(r.createdAt).getFullYear()))].sort((a, b) => b - a);
+            
+            years.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearFilter.appendChild(option);
+            });
+        }
+        
+        // Update stats table based on filters
+        function updateStatsTable() {
+            const year = document.getElementById('stats-year').value;
+            const month = document.getElementById('stats-month').value;
+            
+            let filteredRecords = records;
+            
+            if (year) {
+                filteredRecords = filteredRecords.filter(r => new Date(r.createdAt).getFullYear() == year);
+            }
+            
+            if (month) {
+                filteredRecords = filteredRecords.filter(r => new Date(r.createdAt).getMonth() + 1 == month);
+            }
+            
+            const statsBody = document.getElementById('stats-table-body');
+            statsBody.innerHTML = '';
+            
+            if (!year && !month) {
+                // Show yearly summary
+                const years = [...new Set(records.map(r => new Date(r.createdAt).getFullYear()))].sort((a, b) => b - a);
+                
+                years.forEach(year => {
+                    const yearRecords = records.filter(r => new Date(r.createdAt).getFullYear() == year);
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${year}</td>
+                        <td>${yearRecords.length}</td>
+                        <td>${yearRecords.filter(r => r.status === 'accept').length}</td>
+                        <td>${yearRecords.filter(r => r.status === 'hold').length}</td>
+                        <td>${yearRecords.filter(r => r.status === 'running').length}</td>
+                        <td>${yearRecords.filter(r => r.status === 'public-holiday').length}</td>
+                    `;
+                    statsBody.appendChild(row);
+                });
+            } else if (year && !month) {
+                // Show monthly summary for selected year
+                for (let m = 1; m <= 12; m++) {
+                    const monthRecords = filteredRecords.filter(r => new Date(r.createdAt).getMonth() + 1 == m);
+                    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                    
+                    if (monthRecords.length > 0) {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${monthNames[m-1]} ${year}</td>
+                            <td>${monthRecords.length}</td>
+                            <td>${monthRecords.filter(r => r.status === 'accept').length}</td>
+                            <td>${monthRecords.filter(r => r.status === 'hold').length}</td>
+                            <td>${monthRecords.filter(r => r.status === 'running').length}</td>
+                            <td>${monthRecords.filter(r => r.status === 'public-holiday').length}</td>
+                        `;
+                        statsBody.appendChild(row);
+                    }
+                }
+            } else {
+                // Show detailed records for selected month/year
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                const monthName = monthNames[parseInt(month)-1];
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${monthName} ${year}</td>
+                    <td>${filteredRecords.length}</td>
+                    <td>${filteredRecords.filter(r => r.status === 'accept').length}</td>
+                    <td>${filteredRecords.filter(r => r.status === 'hold').length}</td>
+                    <td>${filteredRecords.filter(r => r.status === 'running').length}</td>
+                    <td>${filteredRecords.filter(r => r.status === 'public-holiday').length}</td>
+                `;
+                statsBody.appendChild(row);
+            }
+        }
+        
+        // Save stats to CSV
+        function saveStatsToCSV() {
+            const year = document.getElementById('stats-year').value;
+            const month = document.getElementById('stats-month').value;
+            
+            let csvContent = "Month/Year,Total Records,Accept,Hold,Running,Public Holiday\n";
+            
+            const rows = document.querySelectorAll('#stats-table-body tr');
+            rows.forEach(row => {
+                const cols = row.querySelectorAll('td');
+                const rowData = Array.from(cols).map(col => col.textContent).join(',');
+                csvContent += rowData + '\n';
+            });
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            
+            let fileName = 'records_stats';
+            if (year) fileName += `_${year}`;
+            if (month) fileName += `_${month}`;
+            fileName += '.csv';
+            
+            link.setAttribute('download', fileName);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Print stats
+        function printStats() {
+            const printWindow = window.open('', '', 'width=800,height=600');
+            printWindow.document.write('<html><head><title>Records Statistics</title>');
+            printWindow.document.write('<style>table {border-collapse: collapse; width: 100%;} th, td {border: 1px solid #ddd; padding: 8px; text-align: left;} th {background-color: #f2f2f2;}</style>');
+            printWindow.document.write('</head><body>');
+            printWindow.document.write('<h2>Records Statistics</h2>');
+            
+            const year = document.getElementById('stats-year').value;
+            const month = document.getElementById('stats-month').value;
+            if (year) printWindow.document.write(`<p>Year: ${year}</p>`);
+            if (month) {
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                printWindow.document.write(`<p>Month: ${monthNames[parseInt(month)-1]}</p>`);
+            }
+            
+            printWindow.document.write(document.querySelector('.stats-table').outerHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
+        }
+        
+        // Update filterRecords function to include customer name filter
+        function filterRecords() {
+            const status = document.getElementById('status-filter').value;
+            const customerName = document.getElementById('customer-name-filter').value;
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            
+            let filteredRecords = records;
+            
+            if (status) {
+                filteredRecords = filteredRecords.filter(r => r.status === status);
+            }
+            
+            if (customerName) {
+                filteredRecords = filteredRecords.filter(r => r.name === customerName);
+            }
+            
+            if (searchTerm) {
+                filteredRecords = filteredRecords.filter(r => 
+                    (r.customerNumber && r.customerNumber.toLowerCase().includes(searchTerm)) ||
+                    (r.name && r.name.toLowerCase().includes(searchTerm)) ||
+                    (r.surname && r.surname.toLowerCase().includes(searchTerm)) ||
+                    (r.contact && r.contact.toLowerCase().includes(searchTerm)) ||
+                    (r.machineName && r.machineName.toLowerCase().includes(searchTerm)) ||
+                    (r.serialNumber && r.serialNumber.toLowerCase().includes(searchTerm)) ||
+                    (r.assignedEngineer && r.assignedEngineer.name.toLowerCase().includes(searchTerm)) ||
+                    (r.assignedEngineer && r.assignedEngineer.id.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            updateRecordsTable(filteredRecords);
+            updateSummaryCounts(filteredRecords);
+        }
+        
+        // Update clearFilters function to clear customer name filter
+        function clearFilters() {
+            document.getElementById('status-filter').value = '';
+            document.getElementById('customer-name-filter').value = '';
+            document.getElementById('search-input').value = '';
+            updateRecordsTable(records);
+            updateSummaryCounts(records);
+        }
+        
+        // Initialize the new filters when records are loaded
+        function updateSummary() {
+            // Previous updateSummary code
+            updateSummaryCounts(records);
+            
+            // Initialize the new filters
+            initCustomerNameFilter();
+            initYearFilter();
+            updateStatsTable();
+        }
+        
+        // Call updateSummary when the page loads if there are records
+        if (records.length > 0) {
+            updateSummary();
+        }
     </script>
 </body>
 </html>
